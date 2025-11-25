@@ -645,8 +645,8 @@
                 class="content-container bg-white/95 p-8 rounded-xl shadow-xl border-t-8 border-primary main-content-reveal">
                 <h3 class="text-3xl font-serif text-center text-primary-dark mb-6">Kehadiran & Ucapan</h3>
 
-                <form id="rsvpForm" class="space-y-4" style="display: none;"> <input type="hidden" name="guestId"
-                        id="form-guestId">
+                <form id="rsvpForm" class="space-y-4" style="display: none;">
+                    <input type="hidden" name="guestId" id="form-guestId">
                     <input type="hidden" name="nama" id="form-nama">
 
                     <div>
@@ -763,66 +763,27 @@
         const guestList = document.getElementById('guestbook-list');
 
 
-        // 1.1. Inisialisasi Slider Portrait (Tegak)
+        // 1.1. Inisialisasi Slider (Kode Anda)
         var swiperP = new Swiper(".swiperPortrait", {
-            slidesPerView: 2,
-            spaceBetween: 10,
-            loop: true,
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 3,
-                    spaceBetween: 20,
-                },
-                768: {
-                    slidesPerView: 4,
-                    spaceBetween: 20,
-                },
-            },
+            slidesPerView: 2, spaceBetween: 10, loop: true, autoplay: { delay: 2500, disableOnInteraction: false, }, pagination: { el: ".swiper-pagination", clickable: true, }, breakpoints: { 640: { slidesPerView: 3, spaceBetween: 20, }, 768: { slidesPerView: 4, spaceBetween: 20, }, },
         });
-
-        // 1.2. Inisialisasi Slider Landscape (Mendatar)
         var swiperL = new Swiper(".swiperLandscape", {
-            slidesPerView: 1,
-            spaceBetween: 10,
-            loop: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            breakpoints: {
-                640: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                },
-            },
+            slidesPerView: 1, spaceBetween: 10, loop: true, autoplay: { delay: 3000, disableOnInteraction: false, }, pagination: { el: ".swiper-pagination", clickable: true, }, breakpoints: { 640: { slidesPerView: 2, spaceBetween: 20, }, },
         });
 
-        // 2. GUEST ID & NAME FROM URL
+        // 2. GUEST ID & NAME FROM URL (MODIFIKASI: Nama diambil dari Apps Script)
         const urlParams = new URLSearchParams(window.location.search);
-        const guestId = urlParams.get('id'); // Kunci utama untuk validasi
-        const guestName = urlParams.get('to') || urlParams.get('kepada') || 'Tamu Undangan'; // Nama untuk display
+        const guestId = urlParams.get('id'); 
+        let guestName = 'Tamu Undangan'; // Default, akan diisi dari Apps Script
 
-        // Tampilkan nama di cover depan & set nilai hidden form
-        guestNameDisplay.innerText = guestName;
+        // Set nilai hidden form dan display awal
         const formNamaInput = document.getElementById('form-nama');
         const formGuestIdInput = document.getElementById('form-guestId');
-
-        if (formNamaInput) formNamaInput.value = guestName;
+        
         if (formGuestIdInput) formGuestIdInput.value = guestId;
+        guestNameDisplay.innerText = guestName; // Tampilkan default dulu
 
-        let isGuestValid = false; // Flag status validasi
+        let isGuestValid = false; 
 
 
         // FUNGSI VALIDASI NAMA TAMU (berbasis ID)
@@ -836,19 +797,28 @@
             validationStatus.innerHTML = 'Sedang memverifikasi Undangan... <span class="loader ml-2"></span>';
             setOpenButtonState(false, 'Memverifikasi...');
 
-            const validationURL = `${scriptURL}?action=validateGuest&id=${guestId}`;
+            const validationURL = `${scriptURL}?action=validateGuest&id=${guestId}`; 
 
             try {
                 const response = await fetch(validationURL);
                 const res = await response.json();
 
                 if (res.valid === true) {
+                    
+                    // --- MENGAMBIL NAMA DARI APPS SCRIPT ---
+                    guestName = res.name || 'Tamu Undangan'; // Ambil nama dari Apps Script
+                    guestNameDisplay.innerText = guestName; // Tampilkan nama
+                    if (formNamaInput) formNamaInput.value = guestName; // Set nama ke form
+                    // ------------------------------------------
+
                     validationStatus.innerHTML = '✅ Undangan terdaftar!';
                     setOpenButtonState(true, 'Buka Undangan');
                     isGuestValid = true;
+
                 } else {
                     validationStatus.innerHTML = '❌ Maaf, Tamu Undangan Tidak Terdaftar.';
                     setOpenButtonState(false, '❌ Tidak Dapat Dibuka');
+                    isGuestValid = false;
                 }
             } catch (error) {
                 console.error('Error saat validasi:', error);
@@ -900,7 +870,7 @@
             }, 800);
         });
 
-        // 4. MUSIC TOGGLE
+        // 4. MUSIC TOGGLE (Kode Anda)
         musicBtn.addEventListener('click', () => {
             if (music.paused) {
                 music.play();
@@ -938,20 +908,20 @@
 
                 if (res.submitted === true) {
                     form.style.display = 'none'; // Sembunyikan form
-
+                    
                     // Tambahkan pesan sukses permanen di atas form
                     if (!document.getElementById('submission-success-message')) {
-                        document.getElementById('rsvpForm').insertAdjacentHTML('beforebegin',
-                            '<div id="submission-success-message" class="text-center p-4 bg-green-50 rounded-xl border border-green-200 text-green-700 font-bold mb-4">Anda sudah mengirimkan konfirmasi kehadiran. Terima kasih!</div>');
+                         document.getElementById('rsvpForm').insertAdjacentHTML('beforebegin', 
+                        '<div id="submission-success-message" class="text-center p-4 bg-green-50 rounded-xl border border-green-200 text-green-700 font-bold mb-4">Anda sudah mengirimkan konfirmasi kehadiran. Terima kasih!</div>');
                     }
                 } else {
                     // Jika submitted: false, pastikan form terlihat
-                    form.style.display = 'block';
+                    form.style.display = 'block'; 
                 }
 
             } catch (error) {
                 console.error('Gagal mengecek status submit:', error);
-                form.style.display = 'block'; // Fallback: biarkan form muncul jika ada error koneksi
+                form.style.display = 'block'; 
             }
         }
         // --------------------------------------------------------
@@ -1006,7 +976,7 @@
             });
         }
 
-        // 8. GOOGLE SHEETS INTEGRATION (AJAX) - MODIFIED
+        // 8. GOOGLE SHEETS INTEGRATION (AJAX)
         form.addEventListener('submit', e => {
             e.preventDefault();
             if (!scriptURL.includes('script.google.com')) {
@@ -1027,15 +997,15 @@
                     } else if (res.result === 'success') {
                         alert('Terima kasih! Konfirmasi Anda telah tersimpan.');
                         form.reset();
-                        document.getElementById('form-nama').value = guestName;
-                        document.getElementById('form-guestId').value = guestId;
+                        document.getElementById('form-nama').value = guestName; 
+                        document.getElementById('form-guestId').value = guestId; 
                         loadGuestbook();
                         form.style.display = 'none'; // SEMBUNYIKAN FORM SETELAH BERHASIL SUBMIT
                         checkSubmissionStatusAndHideForm(); // Tampilkan pesan sukses permanen
                     } else {
                         alert('Gagal mengirim. Silakan coba lagi. Error: ' + res.error);
                     }
-
+                    
                     btnSubmit.disabled = false;
                     btnSubmit.innerHTML = 'Kirim Konfirmasi';
 
@@ -1122,6 +1092,4 @@
 
 </body>
 
-
 </html>
-
