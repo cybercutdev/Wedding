@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding of Meuthia & Fakhry</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+        /* BASE STYLE */
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            overflow: hidden;
+            background-color: #fcfbf8;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .font-elegant {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .font-vibes {
+            font-family: 'Great Vibes', cursive;
+            font-weight: normal;
+        }
+
+        /* COLORS */
+        .text-gold {
+            color: #8B7342;
+        }
+
+        .bg-primary {
+            background-color: #A4915F;
+        }
+
+        .text-primary {
+            color: #A4915F;
+        }
+
+        .text-primary-dark {
+            color: #8B7342;
+        }
+
+        .border-primary {
+            border-color: #A4915F;
+        }
+
+        .text-ice {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* SCROLL SNAP */
+        #main-invitation {
+            max-width: 640px;
+            margin: 0 auto;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+            scroll-snap-type: y mandatory;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
+        }
+
+        #invitation-cover {
+            max-width: 640px;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+            height: 100%;
+        }
+
+        #main-invitation section {
+            scroll-snap-align: start;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem 0;
+            position: relative;
+        }
+
+        .content-container {
+            width: 90%;
+            max-width: 48rem;
+            margin: 0 auto;
+
+            /* STYLE KARTU BARU */
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Gambar full height tanpa dipotong */
+        .bg-contain {
+            background-size: contain;
+        }
+
+        /* ANIMATION */
+        .main-content-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-in-out;
+            transition-delay: 0.3s;
+        }
+
+        #main-invitation section.active .main-content-reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #A4915F;
+            border-radius: 50%;
+            width: 15px;
+            /* Dikecilkan */
+            height: 15px;
+            /* Dikecilkan */
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Custom Style untuk Swiper Pagination warnanya emas */
+        .swiper-pagination-bullet-active {
+            background-color: #A4915F !important;
+        }
+
+        /* Definisi Keyframes (Gerakan) */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Kelas untuk dipanggil di HTML */
+        .animate-fade-in-up {
+            animation: fadeInUp 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .animate-slide-down {
+            animation: slideDown 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-[#fcfbf8]">
+
+    <audio id="background-music" src="audio/song.mp3" loop></audio>
+    <button id="music-toggle"
+        class="fixed bottom-6 right-6 z-[200] w-14 h-14 bg-primary text-white rounded-full shadow-xl flex items-center justify-center transition-all transform hover:scale-110 hidden">
+        <span id="icon-play">🎵</span>
+    </button>
+
+    <div id="invitation-cover"
+        class="fixed inset-0 z-[100] flex flex-col items-center justify-center text-center p-6 bg-cover bg-center overflow-hidden"
+        style="background-image: url('images/cover.png');">
+
+        <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black/80"></div>
+
+        <div class="relative z-10 text-white animate-fade-in-up space-y-2">
+
+            <p class="text-sm md:text-base tracking-[0.3em] font-serif uppercase text-gray-300 mb-4 animate-slide-down">
+                The Wedding Of
+            </p>
+
+            <div class="space-y-[-10px] md:space-y-[-20px] mb-6 drop-shadow-lg">
+                <h2 class="text-6xl md:text-8xl font-vibes text-ice">Meuthia</h2>
+                <p class="text-3xl md:text-5xl font-vibes text-primary/90">&</p>
+                <h2 class="text-6xl md:text-8xl font-vibes text-ice">Fakhry</h2>
+            </div>
+
+            <div class="flex items-center justify-center gap-4 mb-8 opacity-90">
+                <div class="h-[1px] w-12 bg-white/50"></div>
+                <p class="text-lg md:text-xl font-serif italic tracking-wide">Sabtu, 06 Desember 2025</p>
+                <div class="h-[1px] w-12 bg-white/50"></div>
+            </div>
+
+            <div
+                class="mt-8 mx-auto max-w-xs w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 shadow-2xl transform transition hover:scale-105 duration-500">
+                <p class="text-xs text-gray-200 uppercase tracking-widest mb-3">Kepada Yth.</p>
+
+                <h3 id="guest-name-display"
+                    class="text-2xl md:text-3xl font-bold font-serif text-yellow-100 mb-1 break-words leading-tight">
+                    Tamu Undangan
+                </h3>
+
+                <p id="validation-status" class="text-xs text-yellow-200 mt-3 font-bold break-words leading-tight">
+                </p>
+
+                <div class="w-10 h-0.5 bg-primary mx-auto my-3"></div>
+
+                <p class="text-[10px] text-gray-300 italic">
+                    Mohon maaf apabila ada kesalahan penulisan nama
+                </p>
+            </div>
+
+            <div class="mt-8">
+                <button id="open-invitation" disabled
+                    class="group relative px-8 py-3 bg-gray-500/70 text-white font-bold rounded-full shadow-lg transition-all duration-300 transform">
+                    <span class="relative z-10 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76">
+                            </path>
+                        </svg>
+                        Memuat...
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-invitation" class="hidden bg-fixed bg-center bg-cover min-h-screen"
+        style="background-image: url('images/4.JPG');">
+
+        <section id="page1">
+
+            <div
+                class="content-container bg-white/95 p-8 rounded-xl shadow-xl border-t-8 border-primary main-content-reveal text-center">
+
+                <div class="flex justify-center mb-6">
+
+                    <div
+                        class="w-40 h-40 rounded-full border-4 border-primary shadow-xl overflow-hidden relative bg-gray-200">
+
+                        <img src="images/33.jpg" alt="Foto Penutup"
+                            class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+
+                    </div>
+
+                </div>
+
+                <blockquote class="relative my-4">
+
+                    <p class="text-xl italic text-gray-700 font-serif leading-relaxed">
+
+                        "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari
+
+                        jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya..."
+
+                    </p>
+
+                    <cite class="block text-md font-bold text-primary mt-4">- QS. Ar-Rum: 21 -</cite>
+
+                </blockquote>
+
+            </div>
+
+        </section>
+
+        <section id="page2">
+            <div class="content-container text-center main-content-reveal">
+                <div class="relative w-full h-[70vh] bg-cover bg-center rounded-2xl shadow-xl overflow-hidden border-t-8 border-primary"
+                    style="background-image: url('images/mempelai2.png');">
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-8 text-white text-left">
+                        <h4 class="text-6xl font-vibes text-ice mb-2">Cut Meuthia</h4>
+                        <p class="text-lg font-serif opacity-90">Putri dari Bpk. Abdurahman & Ibu Yuyun (almh)</p>
+
+                        <div class="mt-4 flex gap-2">
+                            <a href="https://www.instagram.com/cut_gbd/" target="_blank"
+                                class="p-2 border border-white/50 rounded-full hover:bg-white hover:text-black flex items-center justify-center transition-all duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="page3">
+            <div class="content-container text-center main-content-reveal">
+                <div class="relative w-full h-[70vh] bg-cover bg-center rounded-2xl shadow-xl overflow-hidden border-t-8 border-primary"
+                    style="background-image: url('images/mempelai1.png');">
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-8 text-white text-left">
+                        <h4 class="text-6xl font-vibes text-ice mb-2">Fakhry Ghiyats</h4>
+                        <p class="text-lg font-serif opacity-90">Putra dari Bpk. Alisan & Ibu Aprilianti</p>
+
+                        <div class="mt-4 flex gap-2">
+                            <a href="https://www.instagram.com/frichang/" target="_blank"
+                                class="p-2 border border-white/50 rounded-full hover:bg-white hover:text-black flex items-center justify-center transition-all duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="page4">
+            <div
+                class="content-container bg-white/95 p-6 md:p-10 rounded-xl shadow-xl border-t-8 border-primary main-content-reveal text-center">
+
+                <h3 class="text-4xl font-serif text-primary-dark mb-2">Save The Date</h3>
+                <p class="text-gray-500 italic mb-8 text-sm">Kami menantikan kehadiran Anda pada hari bahagia kami</p>
+
+                <div id="countdown-data" data-date="2025-12-06" data-time="09:00"></div>
+
+                <div id="countdown" class="flex justify-center flex-wrap gap-4 mb-10">
+                    <div class="border border-primary/30 bg-[#fcfbf8] p-3 rounded-xl min-w-[80px] shadow-sm">
+                        <span id="days" class="text-3xl font-serif font-bold text-primary-dark block">00</span>
+                        <span class="text-xs uppercase tracking-widest text-gray-500">Hari</span>
+                    </div>
+                    <div class="border border-primary/30 bg-[#fcfbf8] p-3 rounded-xl min-w-[80px] shadow-sm">
+                        <span id="hours" class="text-3xl font-serif font-bold text-primary-dark block">00</span>
+                        <span class="text-xs uppercase tracking-widest text-gray-500">Jam</span>
+                    </div>
+                    <div class="border border-primary/30 bg-[#fcfbf8] p-3 rounded-xl min-w-[80px] shadow-sm">
+                        <span id="minutes" class="text-3xl font-serif font-bold text-primary-dark block">00</span>
+                        <span class="text-xs uppercase tracking-widest text-gray-500">Menit</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div
+                        class="bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 class="text-3xl font-vibes text-primary-dark mb-4">Akad Nikah</h4>
+
+                        <div class="space-y-3 text-sm md:text-base text-gray-600">
+                            <div class="flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <span class="font-bold">Sabtu, 06 Desember 2025</span>
+                            </div>
+                            <div class="flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>Pukul 09:00 WIB</span>
+                            </div>
+                        </div>
+
+                        <hr class="border-gray-200 my-4">
+
+                        <p class="text-sm text-gray-600 mb-4 px-2">
+                            Kp. Pangkalan Rt.007/010 Semanan, Kalideres, Jakarta Barat<br>
+                            <span class="font-semibold text-primary-dark">(Lapangan Bulutangkis Blok Manong)</span>
+                        </p>
+
+                        <a href="https://maps.app.goo.gl/35M52R712J8h9x317" target="_blank"
+                            class="inline-flex items-center gap-2 px-6 py-2 bg-primary text-white text-xs font-bold rounded-full shadow hover:bg-primary-dark transition-transform active:scale-95">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            Google Maps
+                        </a>
+                    </div>
+
+                    <div
+                        class="bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 class="text-3xl font-vibes text-primary-dark mb-4">Resepsi</h4>
+
+                        <div class="space-y-3 text-sm md:text-base text-gray-600">
+                            <div class="flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                    </path>
+                                </svg>
+                                <span class="font-bold">Sabtu, 06 Desember 2025</span>
+                            </div>
+                            <div class="flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>10:00 WIB - Selesai</span>
+                            </div>
+                        </div>
+
+                        <hr class="border-gray-200 my-4">
+
+                        <p class="text-sm text-gray-600 mb-4 px-2">
+                            Kp. Pangkalan Rt.007/010 Semanan, Kalideres, Jakarta Barat<br>
+                            <span class="font-semibold text-primary-dark">(Lapangan Bulutangkis Blok Manong)</span>
+                        </p>
+
+                        <a href="https://maps.app.goo.gl/35M52R712J8h9x317" target="_blank"
+                            class="inline-flex items-center gap-2 px-6 py-2 bg-white text-primary border border-primary text-xs font-bold rounded-full shadow hover:bg-gray-50 transition-transform active:scale-95">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            Google Maps
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <section id="page5" class="py-12 flex items-center justify-center">
+            <div
+                class="content-container bg-white/95 p-6 md:p-8 rounded-xl shadow-2xl main-content-reveal text-center border-t-8 border-primary overflow-hidden">
+
+                <div class="flex items-center justify-center gap-3 mb-8">
+                    <svg class="w-8 h-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
+                    </svg>
+                    <h3 class="text-3xl font-serif text-primary-dark">Our Gallery</h3>
+                </div>
+
+                <div class="mb-10">
+                    <h4
+                        class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-200 pb-2">
+                        Portrait Collection
+                    </h4>
+
+                    <div class="swiper swiperPortrait pb-10">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <a href="images/9.jpg" class="glightbox block rounded-lg overflow-hidden shadow h-80">
+                                    <img src="images/9.jpg" alt="Landscape 3" class="w-full h-full object-cover">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="images/6.png" class="glightbox block rounded-lg overflow-hidden shadow h-80">
+                                    <img src="images/6.png" alt="Portrait 6" class="w-full h-full object-cover">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="images/10.jpg" class="glightbox block rounded-lg overflow-hidden shadow h-80">
+                                    <img src="images/10.jpg" alt="Landscape 4" class="w-full h-full object-cover">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="images/8.jpg" class="glightbox block rounded-lg overflow-hidden shadow h-80">
+                                    <img src="images/8.jpg" alt="Landscape 2" class="w-full h-full object-cover">
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+                <div>
+                    <h4
+                        class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-200 pb-2">
+                        Landscape Collection
+                    </h4>
+
+                    <div class="swiper swiperLandscape pb-10">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <a href="images/2.png" class="glightbox block rounded-lg overflow-hidden shadow h-56">
+                                    <img src="images/2.png" alt="Portrait 2" class="w-full h-full object-cover">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="images/11.jpg" class="glightbox block rounded-lg overflow-hidden shadow h-56">
+                                    <img src="images/11.jpg" alt="Landscape 5" class="w-full h-full object-cover">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="images/3.png" class="glightbox block rounded-lg overflow-hidden shadow h-56">
+                                    <img src="images/3.png" alt="Portrait 3" class="w-full h-full object-cover">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="images/12.jpg" class="glightbox block rounded-lg overflow-hidden shadow h-56">
+                                    <img src="images/12.jpg" alt="Landscape 6" class="w-full h-full object-cover">
+                                </a>
+                            </div>
+                            <div class="swiper-slide">
+                                <a href="images/5.png" class="glightbox block rounded-lg overflow-hidden shadow h-56">
+                                    <img src="images/5.png" alt="Portrait 5" class="w-full h-full object-cover">
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <section id="page6" class="py-12 flex items-center justify-center">
+            <div
+                class="content-container bg-white/95 p-8 rounded-xl shadow-2xl main-content-reveal text-center border-t-8 border-primary">
+
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <svg class="w-8 h-8 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H4.5a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+                    </svg>
+                    <h3 class="text-3xl font-serif text-primary-dark">Wedding Gift</h3>
+                </div>
+
+                <p class="text-sm text-gray-600 mb-8 italic">
+                    "Doa restu Anda adalah hadiah terbaik bagi kami. Namun jika memberi adalah ungkapan tanda kasih,
+                    Anda dapat memberi kado secara cashless atau mengirimkan kado fisik."
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+                    <div
+                        class="bg-[#fcfbf8] p-6 rounded-xl shadow-md border border-primary/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                        <div class="flex justify-between items-start">
+                            <div class="text-left">
+                                <p class="font-bold text-lg text-primary-dark">BCA</p>
+                                <p class="text-xs text-gray-500">Bank Central Asia</p>
+                            </div>
+                            <svg class="w-8 h-8 text-gray-300" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2 7h20v10H2V7zm2 2v6h16V9H4z" opacity="0.3" />
+                                <path d="M4 5h16V3H4v2zm0 16h16v-2H4v2z" />
+                            </svg>
+                        </div>
+
+                        <div class="my-6 text-center bg-white p-3 rounded border border-gray-100">
+                            <p class="font-mono text-xl md:text-2xl font-bold text-gray-800 tracking-wider">5490988795
+                            </p>
+                        </div>
+
+                        <div class="flex justify-between items-end">
+                            <div class="text-left">
+                                <p class="text-xs text-gray-500">Atas Nama</p>
+                                <p class="font-semibold text-gray-700">Meuthia</p>
+                            </div>
+                            <button onclick="copyText('5490988795', this)"
+                                class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-xs font-bold rounded-full shadow hover:bg-primary-dark transition-colors active:scale-95">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3">
+                                    </path>
+                                </svg>
+                                Salin
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-[#fcfbf8] p-6 rounded-xl shadow-md border border-primary/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                        <div class="flex justify-between items-start">
+                            <div class="text-left">
+                                <p class="font-bold text-lg text-primary-dark">MANDIRI</p>
+                                <p class="text-xs text-gray-500">Bank Mandiri</p>
+                            </div>
+                            <svg class="w-8 h-8 text-gray-300" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2 7h20v10H2V7zm2 2v6h16V9H4z" opacity="0.3" />
+                                <path d="M4 5h16V3H4v2zm0 16h16v-2H4v2z" />
+                            </svg>
+                        </div>
+
+                        <div class="my-6 text-center bg-white p-3 rounded border border-gray-100">
+                            <p class="font-mono text-xl md:text-xl font-bold text-gray-800 tracking-wider break-all">
+                                1180014504319</p>
+                        </div>
+
+                        <div class="flex justify-between items-end">
+                            <div class="text-left">
+                                <p class="text-xs text-gray-500">Atas Nama</p>
+                                <p class="font-semibold text-gray-700">Fakhry</p>
+                            </div>
+                            <button onclick="copyText('1180014504319', this)"
+                                class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-xs font-bold rounded-full shadow hover:bg-primary-dark transition-colors active:scale-95">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3">
+                                    </path>
+                                </svg>
+                                Salin
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="page7">
+            <div
+                class="content-container bg-white/95 p-8 rounded-xl shadow-xl border-t-8 border-primary main-content-reveal">
+                <h3 class="text-3xl font-serif text-center text-primary-dark mb-6">Kehadiran & Ucapan</h3>
+
+                <form id="rsvpForm" class="space-y-4" style="display: none;"> <input type="hidden" name="guestId"
+                        id="form-guestId">
+                    <input type="hidden" name="nama" id="form-nama">
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Konfirmasi Kehadiran</label>
+                        <div class="flex gap-4">
+                            <label
+                                class="flex items-center space-x-2 border p-3 rounded w-full cursor-pointer hover:bg-gray-50 transition-colors">
+                                <input type="radio" name="status" value="Hadir" class="text-primary" required
+                                    onchange="toggleJumlah(true)">
+                                <span>Hadir</span>
+                            </label>
+                            <label
+                                class="flex items-center space-x-2 border p-3 rounded w-full cursor-pointer hover:bg-gray-50 transition-colors">
+                                <input type="radio" name="status" value="Tidak Hadir" class="text-primary"
+                                    onchange="toggleJumlah(false)">
+                                <span>Maaf</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="jumlah-wrapper" class="hidden">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Jumlah Tamu</label>
+                        <div class="flex items-center">
+                            <button type="button" onclick="updateJumlah(-1)"
+                                class="w-10 h-10 bg-gray-200 font-bold rounded-l hover:bg-gray-300 transition">-</button>
+                            <input type="text" name="jumlah" id="jumlah-input" value="1" readonly
+                                class="w-12 h-10 text-center border-t border-b border-gray-200 bg-white">
+                            <button type="button" onclick="updateJumlah(1)"
+                                class="w-10 h-10 bg-gray-200 font-bold rounded-r hover:bg-gray-300 transition">+</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Ucapan & Doa</label>
+                        <textarea name="ucapan" rows="3"
+                            class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-primary"
+                            placeholder="Tulis doa restu..." required></textarea>
+                    </div>
+
+                    <button type="submit" id="btn-submit"
+                        class="w-full py-3 bg-primary text-white font-bold rounded-full shadow-lg hover:bg-primary-dark transition transform active:scale-95">
+                        Kirim Konfirmasi
+                    </button>
+                </form>
+
+                <div class="mt-8 grid grid-cols-2 gap-4">
+                    <div class="bg-green-50 p-4 rounded-xl border border-green-200 text-center shadow-sm">
+                        <h5 class="text-xs font-bold text-green-600 uppercase tracking-wider mb-1">Hadir</h5>
+                        <p id="stat-hadir" class="text-3xl font-bold text-green-700">0</p>
+                        <p class="text-[10px] text-green-600/70">Orang</p>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded-xl border border-red-200 text-center shadow-sm">
+                        <h5 class="text-xs font-bold text-red-600 uppercase tracking-wider mb-1">Maaf</h5>
+                        <p id="stat-tidak" class="text-3xl font-bold text-red-700">0</p>
+                        <p class="text-[10px] text-red-600/70">Orang</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 border-t pt-6">
+                    <h4 class="text-center font-serif mb-4 text-gray-700">Ucapan Terbaru</h4>
+                    <div id="guestbook-list" class="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                        <p class="text-center text-gray-400 text-sm italic">Memuat ucapan...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="page8">
+            <div class="content-container text-center main-content-reveal p-8">
+
+                <div class="flex justify-center mb-6">
+                    <div
+                        class="w-40 h-40 rounded-full border-4 border-primary shadow-xl overflow-hidden relative bg-gray-200">
+                        <img src="images/close.jpg" alt="Foto Penutup"
+                            class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                </div>
+                <p class="text-gray-600 mb-4 italic">
+                    "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir
+                    untuk memberikan doa restu kepada kami."
+                </p>
+
+                <p class="text-gray-600 mb-8 font-semibold">
+                    Atas doa & restunya kami ucapkan terima kasih.
+                </p>
+
+                <div class="w-1/2 h-0.5 bg-primary/30 mx-auto mb-8"></div>
+
+                <p class="text-sm text-gray-500 mb-2">Kami yang berbahagia,</p>
+                <h2 class="text-6xl font-vibes text-primary-dark">Meuthia & Fakhry</h2>
+
+            </div>
+        </section>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        // === PENTING: GANTI URL INI ===
+        // GANTI URL DI BAWAH INI DENGAN URL GOOGLE APPS SCRIPT ANDA
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwaM6CG7OvEwAw3J7hW2sr9UtmSIsIjBkNGjOpohsMYgyImffIejp4jMflZGAwVF5P4gw/exec'; // <-- GANTI DENGAN LINK ASLI ANDA!
+
+        // 1. INITIALIZATION
+        const cover = document.getElementById('invitation-cover');
+        const main = document.getElementById('main-invitation');
+        const openBtn = document.getElementById('open-invitation');
+        const music = document.getElementById('background-music');
+        const musicBtn = document.getElementById('music-toggle');
+        const guestNameDisplay = document.getElementById('guest-name-display');
+        const validationStatus = document.getElementById('validation-status');
+        const lightbox = GLightbox({ selector: '.glightbox' });
+
+        // Elemen Form RSVP
+        const form = document.getElementById('rsvpForm');
+        const btnSubmit = document.getElementById('btn-submit');
+        const guestList = document.getElementById('guestbook-list');
+
+
+        // 1.1. Inisialisasi Slider Portrait (Tegak)
+        var swiperP = new Swiper(".swiperPortrait", {
+            slidesPerView: 2,
+            spaceBetween: 10,
+            loop: true,
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 3,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                },
+            },
+        });
+
+        // 1.2. Inisialisasi Slider Landscape (Mendatar)
+        var swiperL = new Swiper(".swiperLandscape", {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+            },
+        });
+
+        // 2. GUEST ID & NAME FROM URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestId = urlParams.get('id'); // Kunci utama untuk validasi
+        const guestName = urlParams.get('to') || urlParams.get('kepada') || 'Tamu Undangan'; // Nama untuk display
+
+        // Tampilkan nama di cover depan & set nilai hidden form
+        guestNameDisplay.innerText = guestName;
+        const formNamaInput = document.getElementById('form-nama');
+        const formGuestIdInput = document.getElementById('form-guestId');
+
+        if (formNamaInput) formNamaInput.value = guestName;
+        if (formGuestIdInput) formGuestIdInput.value = guestId;
+
+        let isGuestValid = false; // Flag status validasi
+
+
+        // FUNGSI VALIDASI NAMA TAMU (berbasis ID)
+        async function validateGuest() {
+            if (!guestId) {
+                validationStatus.innerHTML = '⚠️ Silakan gunakan link yang di bagikan mempelai.';
+                setOpenButtonState(true, 'Buka Undangan');
+                return;
+            }
+
+            validationStatus.innerHTML = 'Sedang memverifikasi Undangan... <span class="loader ml-2"></span>';
+            setOpenButtonState(false, 'Memverifikasi...');
+
+            const validationURL = `${scriptURL}?action=validateGuest&id=${guestId}`;
+
+            try {
+                const response = await fetch(validationURL);
+                const res = await response.json();
+
+                if (res.valid === true) {
+                    validationStatus.innerHTML = '✅ Undangan terdaftar!';
+                    setOpenButtonState(true, 'Buka Undangan');
+                    isGuestValid = true;
+                } else {
+                    validationStatus.innerHTML = '❌ Maaf, Tamu Undangan Tidak Terdaftar.';
+                    setOpenButtonState(false, '❌ Tidak Dapat Dibuka');
+                }
+            } catch (error) {
+                console.error('Error saat validasi:', error);
+                validationStatus.innerHTML = '⚠️ Gagal terhubung. Coba Muat Ulang.';
+                setOpenButtonState(true, 'Buka Undangan (Skip Validasi)');
+                isGuestValid = true;
+            }
+        }
+
+        function setOpenButtonState(enabled, text) {
+            openBtn.disabled = !enabled;
+            const iconSvg = text.includes('Buka') ? '<svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"></path></svg>' : '';
+            openBtn.innerHTML = `<span class="relative z-10 flex items-center gap-2">${iconSvg} ${text}</span>`;
+
+            if (enabled) {
+                openBtn.classList.replace('bg-gray-500/70', 'bg-primary');
+                openBtn.classList.add('hover:bg-[#8B7342]', 'hover:-translate-y-1', 'shadow-[0_0_20px_rgba(164,145,95,0.5)]');
+                openBtn.classList.remove('shadow-lg');
+            } else {
+                openBtn.classList.replace('bg-primary', 'bg-gray-500/70');
+                openBtn.classList.remove('hover:bg-[#8B7342]', 'hover:-translate-y-1', 'shadow-[0_0_20px_rgba(164,145,95,0.5)]');
+                openBtn.classList.add('shadow-lg');
+            }
+        }
+
+        // Jalankan validasi saat script dimuat
+        validateGuest();
+
+        // 3. OPEN INVITATION Logic
+        openBtn.addEventListener('click', () => {
+            if (!isGuestValid && guestId) {
+                if (openBtn.innerHTML.includes('Tidak Dapat Dibuka')) {
+                    alert('Akses undangan dibatasi hanya untuk ID yang terdaftar. Terima kasih.');
+                    return;
+                }
+            }
+
+            cover.style.transition = 'opacity 0.8s';
+            cover.style.opacity = '0';
+            setTimeout(() => {
+                cover.style.display = 'none';
+                main.classList.remove('hidden');
+
+                music.play().catch(e => console.log("Autoplay dicegah browser"));
+                musicBtn.classList.remove('hidden');
+
+                loadGuestbook();
+                checkSubmissionStatusAndHideForm(); // 👈 Panggil fungsi cek form
+            }, 800);
+        });
+
+        // 4. MUSIC TOGGLE
+        musicBtn.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+                musicBtn.style.opacity = '1';
+            } else {
+                music.pause();
+                musicBtn.style.opacity = '0.5';
+            }
+        });
+
+        // 5. SCROLL ANIMATION (Kode Anda)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+
+
+        // --------------------------------------------------------
+        // FUNGSI UTAMA CEK & SEMBUNYIKAN FORM
+        // --------------------------------------------------------
+        async function checkSubmissionStatusAndHideForm() {
+            if (!guestId) {
+                form.style.display = 'block'; // Jika link umum/tanpa ID, form tetap tampil
+                return;
+            }
+
+            const statusURL = `${scriptURL}?action=checkSubmissionStatus&id=${guestId}`;
+
+            try {
+                const response = await fetch(statusURL);
+                const res = await response.json();
+
+                if (res.submitted === true) {
+                    form.style.display = 'none'; // Sembunyikan form
+
+                    // Tambahkan pesan sukses permanen di atas form
+                    if (!document.getElementById('submission-success-message')) {
+                        document.getElementById('rsvpForm').insertAdjacentHTML('beforebegin',
+                            '<div id="submission-success-message" class="text-center p-4 bg-green-50 rounded-xl border border-green-200 text-green-700 font-bold mb-4">Anda sudah mengirimkan konfirmasi kehadiran. Terima kasih!</div>');
+                    }
+                } else {
+                    // Jika submitted: false, pastikan form terlihat
+                    form.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Gagal mengecek status submit:', error);
+                form.style.display = 'block'; // Fallback: biarkan form muncul jika ada error koneksi
+            }
+        }
+        // --------------------------------------------------------
+
+
+        // 6. COUNTDOWN TIMER (Kode Anda)
+        const countdownEl = document.getElementById('countdown-data');
+        if (countdownEl) {
+            const targetDate = new Date(countdownEl.dataset.date + 'T' + countdownEl.dataset.time).getTime();
+
+            setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    document.getElementById('countdown').innerHTML = "Acara Telah Dimulai";
+                    return;
+                }
+
+                document.getElementById('days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+                document.getElementById('hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById('minutes').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            }, 1000);
+        }
+
+        // 7. FORM HELPER (Kode Anda)
+        function toggleJumlah(show) {
+            document.getElementById('jumlah-wrapper').style.display = show ? 'block' : 'none';
+            document.getElementById('jumlah-input').value = show ? '1' : '0';
+        }
+
+        function updateJumlah(val) {
+            let input = document.getElementById('jumlah-input');
+            let current = parseInt(input.value);
+            let next = current + val;
+            if (next >= 1 && next <= 10) input.value = next;
+        }
+
+        function copyText(text, btnElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalContent = btnElement.innerHTML;
+                btnElement.innerHTML = '✔ Tersalin!';
+                btnElement.classList.remove('bg-primary');
+                btnElement.classList.add('bg-green-600');
+                setTimeout(() => {
+                    btnElement.innerHTML = originalContent;
+                    btnElement.classList.add('bg-primary');
+                    btnElement.classList.remove('bg-green-600');
+                }, 2000);
+            }).catch(err => {
+                alert("Gagal menyalin nomor rekening.");
+            });
+        }
+
+        // 8. GOOGLE SHEETS INTEGRATION (AJAX) - MODIFIED
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            if (!scriptURL.includes('script.google.com')) {
+                alert("Error: URL Google Script belum dipasang!");
+                return;
+            }
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = 'Mengirim...';
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                .then(response => response.json())
+                .then(res => {
+                    if (res.result === 'error' && res.error.includes('ID sudah pernah')) {
+                        alert('Gagal: Anda hanya dapat mengirimkan ucapan sekali.');
+                        form.style.display = 'none';
+                        checkSubmissionStatusAndHideForm();
+                    } else if (res.result === 'success') {
+                        alert('Terima kasih! Konfirmasi Anda telah tersimpan.');
+                        form.reset();
+                        document.getElementById('form-nama').value = guestName;
+                        document.getElementById('form-guestId').value = guestId;
+                        loadGuestbook();
+                        form.style.display = 'none'; // SEMBUNYIKAN FORM SETELAH BERHASIL SUBMIT
+                        checkSubmissionStatusAndHideForm(); // Tampilkan pesan sukses permanen
+                    } else {
+                        alert('Gagal mengirim. Silakan coba lagi. Error: ' + res.error);
+                    }
+
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = 'Kirim Konfirmasi';
+
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    alert('Gagal mengirim. Silakan coba lagi.');
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = 'Kirim Konfirmasi';
+                });
+        });
+
+        // 9. LOAD GUESTBOOK (Kode Anda)
+        function loadGuestbook() {
+            if (!scriptURL.includes('script.google.com')) return;
+
+            fetch(scriptURL)
+                .then(response => response.json())
+                .then(res => {
+                    const data = res.data;
+                    const guestList = document.getElementById('guestbook-list');
+                    const statHadir = document.getElementById('stat-hadir');
+                    const statTidak = document.getElementById('stat-tidak');
+
+                    if (!data || data.length === 0) {
+                        guestList.innerHTML = '<p class="text-center text-gray-500 text-sm">Belum ada ucapan.</p>';
+                        statHadir.innerText = '0';
+                        statTidak.innerText = '0';
+                        return;
+                    }
+
+                    // --- LOGIKA MENGHITUNG JUMLAH ---
+                    let totalHadir = 0;
+                    let totalTidak = 0;
+
+                    let html = '';
+
+                    data.slice().reverse().forEach(row => {
+                        // 1. Hitung Statistik
+                        if (row.status === 'Hadir') {
+                            totalHadir += parseInt(row.jumlah || 1);
+                        } else {
+                            totalTidak++;
+                        }
+                    });
+
+                    // Render angka ke kotak statistik
+                    statHadir.innerText = totalHadir;
+                    statTidak.innerText = totalTidak;
+
+                    // Render List Ucapan (Batasi 20 terbaru)
+                    data.slice().reverse().slice(0, 20).forEach(row => {
+                        const badgeClass = row.status === 'Hadir'
+                            ? 'bg-green-100 text-green-800 border-green-200'
+                            : 'bg-red-100 text-red-800 border-red-200';
+
+                        const initial = row.nama ? row.nama.charAt(0).toUpperCase() : '?';
+
+                        html += `
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 flex gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-500 shrink-0">
+                                ${initial}
+                            </div>
+                            <div class="w-full">
+                                <div class="flex justify-between items-start mb-1">
+                                    <h5 class="font-bold text-gray-800 text-sm">${row.nama}</h5>
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full border ${badgeClass}">${row.status}</span>
+                                </div>
+                                <p class="text-gray-600 text-sm leading-snug">${row.ucapan}</p>
+                                <p class="text-[10px] text-gray-400 mt-2 text-right">${row.waktu || ''}</p>
+                            </div>
+                        </div>
+                        `;
+                    });
+
+                    guestList.innerHTML = html;
+                })
+                .catch(err => {
+                    console.error(err);
+                    document.getElementById('guestbook-list').innerHTML = '<p class="text-center text-red-400 text-xs">Gagal memuat data.</p>';
+                });
+        }
+    </script>
+
+</body>
+
+</html>
