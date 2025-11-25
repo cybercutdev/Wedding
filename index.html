@@ -829,7 +829,7 @@
         async function validateGuest() {
             if (!guestId) {
                 validationStatus.innerHTML = '⚠️ Silakan gunakan link yang di bagikan mempelai.';
-                setOpenButtonState(true, 'Buka Undangan');
+                setOpenButtonState(false, '❌ Tidak Dapat Dibuka');
                 return;
             }
 
@@ -1121,5 +1121,6 @@
     </script>
 
 </body>
+
 
 </html>
