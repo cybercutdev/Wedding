@@ -853,8 +853,8 @@
             } catch (error) {
                 console.error('Error saat validasi:', error);
                 validationStatus.innerHTML = '⚠️ Gagal terhubung. Coba Muat Ulang.';
-                setOpenButtonState(true, 'Buka Undangan (Skip Validasi)');
-                isGuestValid = true;
+                setOpenButtonState(false, '❌ Muat Ulang Browser');
+                isGuestValid = false;
             }
         }
 
@@ -881,7 +881,7 @@
         openBtn.addEventListener('click', () => {
             if (!isGuestValid && guestId) {
                 if (openBtn.innerHTML.includes('Tidak Dapat Dibuka')) {
-                    alert('Akses undangan dibatasi hanya untuk ID yang terdaftar. Terima kasih.');
+                    alert('Akses undangan dibatasi hanya untuk Tamu Undangan yang terdaftar. Terima kasih.');
                     return;
                 }
             }
@@ -1124,3 +1124,4 @@
 
 
 </html>
+
