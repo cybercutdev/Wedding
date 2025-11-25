@@ -222,7 +222,7 @@
             <div
                 class="mt-8 mx-auto max-w-xs w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 shadow-2xl transform transition hover:scale-105 duration-500">
                 <p class="text-xs text-gray-200 uppercase tracking-widest mb-3">Kepada Yth.</p>
-
+-
                 <h3 id="guest-name-display"
                     class="text-2xl md:text-3xl font-bold font-serif text-yellow-100 mb-1 break-words leading-tight">
                 </h3>
@@ -807,7 +807,7 @@
             if (res.valid === true) {
                 
                 // --- LOGIKA MENGAMBIL NAMA DARI APPS SCRIPT (res.name) ---
-                guestName = res.name || 'Tamu Undangan'; // Ambil nama dari Apps Script
+                guestName = res.name || '-'; // Ambil nama dari Apps Script
                 guestNameDisplay.innerText = guestName; // Tampilkan nama di cover
                 if (formNamaInput) formNamaInput.value = guestName; // Set nama ke hidden form
                 // ------------------------------------------
@@ -1094,6 +1094,7 @@
 </body>
 
 </html>
+
 
 
 
