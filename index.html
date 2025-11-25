@@ -742,355 +742,358 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script>
-        // === PENTING: GANTI URL INI ===
-        // GANTI URL DI BAWAH INI DENGAN URL GOOGLE APPS SCRIPT ANDA
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwW-6N4l20F2K8lFjBrMvVw9aaI_LnXSyw7g8tgWD6Gu_NWE9aHhsxIeL0iXxENVZC0Ag/exec'; // <-- GANTI DENGAN LINK ASLI ANDA!
+            <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+    // === PENTING: GANTI URL INI ===
+    // GANTI URL DI BAWAH INI DENGAN URL GOOGLE APPS SCRIPT ANDA
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwaM6CG7OvEwAw3J7hW2sr9UtmSIsIjBkNGjOpohsMYgyImffIejp4jMflZGAwVF5P4gw/exec'; // <-- GANTI DENGAN LINK ASLI ANDA!
 
-        // 1. INITIALIZATION
-        const cover = document.getElementById('invitation-cover');
-        const main = document.getElementById('main-invitation');
-        const openBtn = document.getElementById('open-invitation');
-        const music = document.getElementById('background-music');
-        const musicBtn = document.getElementById('music-toggle');
-        const guestNameDisplay = document.getElementById('guest-name-display');
-        const validationStatus = document.getElementById('validation-status');
-        const lightbox = GLightbox({ selector: '.glightbox' });
+    // 1. INITIALIZATION
+    const cover = document.getElementById('invitation-cover');
+    const main = document.getElementById('main-invitation');
+    const openBtn = document.getElementById('open-invitation');
+    const music = document.getElementById('background-music');
+    const musicBtn = document.getElementById('music-toggle');
+    const guestNameDisplay = document.getElementById('guest-name-display');
+    const validationStatus = document.getElementById('validation-status');
+    const lightbox = GLightbox({ selector: '.glightbox' });
 
-        // Elemen Form RSVP
-        const form = document.getElementById('rsvpForm');
-        const btnSubmit = document.getElementById('btn-submit');
-        const guestList = document.getElementById('guestbook-list');
-
-
-        // 1.1. Inisialisasi Slider (Kode Anda)
-        var swiperP = new Swiper(".swiperPortrait", {
-            slidesPerView: 2, spaceBetween: 10, loop: true, autoplay: { delay: 2500, disableOnInteraction: false, }, pagination: { el: ".swiper-pagination", clickable: true, }, breakpoints: { 640: { slidesPerView: 3, spaceBetween: 20, }, 768: { slidesPerView: 4, spaceBetween: 20, }, },
-        });
-        var swiperL = new Swiper(".swiperLandscape", {
-            slidesPerView: 1, spaceBetween: 10, loop: true, autoplay: { delay: 3000, disableOnInteraction: false, }, pagination: { el: ".swiper-pagination", clickable: true, }, breakpoints: { 640: { slidesPerView: 2, spaceBetween: 20, }, },
-        });
-
-        // 2. GUEST ID & NAME FROM URL (MODIFIKASI: Nama diambil dari Apps Script)
-        const urlParams = new URLSearchParams(window.location.search);
-        const guestId = urlParams.get('id'); 
-        let guestName = 'Tamu Undangan'; // Default, akan diisi dari Apps Script
-
-        // Set nilai hidden form dan display awal
-        const formNamaInput = document.getElementById('form-nama');
-        const formGuestIdInput = document.getElementById('form-guestId');
-        
-        if (formGuestIdInput) formGuestIdInput.value = guestId;
-        guestNameDisplay.innerText = guestName; // Tampilkan default dulu
-
-        let isGuestValid = false; 
+    // Elemen Form RSVP
+    const form = document.getElementById('rsvpForm');
+    const btnSubmit = document.getElementById('btn-submit');
+    const guestList = document.getElementById('guestbook-list');
 
 
-        // FUNGSI VALIDASI NAMA TAMU (berbasis ID)
-        async function validateGuest() {
-            if (!guestId) {
-                validationStatus.innerHTML = '⚠️ Silakan gunakan link yang di bagikan mempelai.';
+    // 1.1. Inisialisasi Slider (Kode Anda)
+    var swiperP = new Swiper(".swiperPortrait", {
+        slidesPerView: 2, spaceBetween: 10, loop: true, autoplay: { delay: 2500, disableOnInteraction: false, }, pagination: { el: ".swiper-pagination", clickable: true, }, breakpoints: { 640: { slidesPerView: 3, spaceBetween: 20, }, 768: { slidesPerView: 4, spaceBetween: 20, }, },
+    });
+    var swiperL = new Swiper(".swiperLandscape", {
+        slidesPerView: 1, spaceBetween: 10, loop: true, autoplay: { delay: 3000, disableOnInteraction: false, }, pagination: { el: ".swiper-pagination", clickable: true, }, breakpoints: { 640: { slidesPerView: 2, spaceBetween: 20, }, },
+    });
+
+    // 2. GUEST ID & NAME FROM URL (LOGIKA PENGAMBILAN NAMA BARU)
+    const urlParams = new URLSearchParams(window.location.search);
+    const guestId = urlParams.get('id'); // Kunci utama untuk validasi
+    let guestName = 'Tamu Undangan'; // Default, akan diisi dari Apps Script
+
+    // Set nilai hidden form dan display awal
+    const formNamaInput = document.getElementById('form-nama');
+    const formGuestIdInput = document.getElementById('form-guestId');
+    
+    if (formGuestIdInput) formGuestIdInput.value = guestId;
+    guestNameDisplay.innerText = guestName; // Tampilkan default dulu
+
+    let isGuestValid = false; 
+
+
+    // FUNGSI VALIDASI NAMA TAMU (berbasis ID)
+    async function validateGuest() {
+        if (!guestId) {
+            validationStatus.innerHTML = '⚠️ Silakan gunakan link yang di bagikan mempelai.';
+            setOpenButtonState(false, '❌ Tidak Dapat Dibuka');
+            return;
+        }
+
+        validationStatus.innerHTML = 'Sedang memverifikasi Undangan... <span class="loader ml-2"></span>';
+        setOpenButtonState(false, 'Memverifikasi...');
+
+        const validationURL = `${scriptURL}?action=validateGuest&id=${guestId}`; 
+
+        try {
+            const response = await fetch(validationURL);
+            const res = await response.json();
+
+            if (res.valid === true) {
+                
+                // --- LOGIKA MENGAMBIL NAMA DARI APPS SCRIPT (res.name) ---
+                guestName = res.name || 'Tamu Undangan'; // Ambil nama dari Apps Script
+                guestNameDisplay.innerText = guestName; // Tampilkan nama di cover
+                if (formNamaInput) formNamaInput.value = guestName; // Set nama ke hidden form
+                // ------------------------------------------
+
+                validationStatus.innerHTML = '✅ Undangan terdaftar!';
+                setOpenButtonState(true, 'Buka Undangan');
+                isGuestValid = true;
+
+            } else {
+                validationStatus.innerHTML = '❌ Maaf, Tamu Undangan Tidak Terdaftar.';
                 setOpenButtonState(false, '❌ Tidak Dapat Dibuka');
-                return;
-            }
-
-            validationStatus.innerHTML = 'Sedang memverifikasi Undangan... <span class="loader ml-2"></span>';
-            setOpenButtonState(false, 'Memverifikasi...');
-
-            const validationURL = `${scriptURL}?action=validateGuest&id=${guestId}`; 
-
-            try {
-                const response = await fetch(validationURL);
-                const res = await response.json();
-
-                if (res.valid === true) {
-                    
-                    // --- MENGAMBIL NAMA DARI APPS SCRIPT ---
-                    guestName = res.name || 'Tamu Undangan'; // Ambil nama dari Apps Script
-                    guestNameDisplay.innerText = guestName; // Tampilkan nama
-                    if (formNamaInput) formNamaInput.value = guestName; // Set nama ke form
-                    // ------------------------------------------
-
-                    validationStatus.innerHTML = '✅ Undangan terdaftar!';
-                    setOpenButtonState(true, 'Buka Undangan');
-                    isGuestValid = true;
-
-                } else {
-                    validationStatus.innerHTML = '❌ Maaf, Tamu Undangan Tidak Terdaftar.';
-                    setOpenButtonState(false, '❌ Tidak Dapat Dibuka');
-                    isGuestValid = false;
-                }
-            } catch (error) {
-                console.error('Error saat validasi:', error);
-                validationStatus.innerHTML = '⚠️ Gagal terhubung. Coba Muat Ulang.';
-                setOpenButtonState(false, '❌ Muat Ulang Browser');
                 isGuestValid = false;
             }
+        } catch (error) {
+            console.error('Error saat validasi:', error);
+            validationStatus.innerHTML = '⚠️ Gagal terhubung. Coba Muat Ulang.';
+            setOpenButtonState(false, '❌ Muat Ulang Browser');
+            isGuestValid = false;
         }
+    }
 
-        function setOpenButtonState(enabled, text) {
-            openBtn.disabled = !enabled;
-            const iconSvg = text.includes('Buka') ? '<svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"></path></svg>' : '';
-            openBtn.innerHTML = `<span class="relative z-10 flex items-center gap-2">${iconSvg} ${text}</span>`;
+    function setOpenButtonState(enabled, text) {
+        openBtn.disabled = !enabled;
+        const iconSvg = text.includes('Buka') ? '<svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"></path></svg>' : '';
+        openBtn.innerHTML = `<span class="relative z-10 flex items-center gap-2">${iconSvg} ${text}</span>`;
 
-            if (enabled) {
-                openBtn.classList.replace('bg-gray-500/70', 'bg-primary');
-                openBtn.classList.add('hover:bg-[#8B7342]', 'hover:-translate-y-1', 'shadow-[0_0_20px_rgba(164,145,95,0.5)]');
-                openBtn.classList.remove('shadow-lg');
-            } else {
-                openBtn.classList.replace('bg-primary', 'bg-gray-500/70');
-                openBtn.classList.remove('hover:bg-[#8B7342]', 'hover:-translate-y-1', 'shadow-[0_0_20px_rgba(164,145,95,0.5)]');
-                openBtn.classList.add('shadow-lg');
-            }
+        if (enabled) {
+            openBtn.classList.replace('bg-gray-500/70', 'bg-primary');
+            openBtn.classList.add('hover:bg-[#8B7342]', 'hover:-translate-y-1', 'shadow-[0_0_20px_rgba(164,145,95,0.5)]');
+            openBtn.classList.remove('shadow-lg');
+        } else {
+            openBtn.classList.replace('bg-primary', 'bg-gray-500/70');
+            openBtn.classList.remove('hover:bg-[#8B7342]', 'hover:-translate-y-1', 'shadow-[0_0_20px_rgba(164,145,95,0.5)]');
+            openBtn.classList.add('shadow-lg');
         }
+    }
 
-        // Jalankan validasi saat script dimuat
-        validateGuest();
+    // Jalankan validasi saat script dimuat
+    validateGuest();
 
-        // 3. OPEN INVITATION Logic
-        openBtn.addEventListener('click', () => {
-            if (!isGuestValid && guestId) {
-                if (openBtn.innerHTML.includes('Tidak Dapat Dibuka')) {
-                    alert('Akses undangan dibatasi hanya untuk Tamu Undangan yang terdaftar. Terima kasih.');
-                    return;
-                }
-            }
-
-            cover.style.transition = 'opacity 0.8s';
-            cover.style.opacity = '0';
-            setTimeout(() => {
-                cover.style.display = 'none';
-                main.classList.remove('hidden');
-
-                music.play().catch(e => console.log("Autoplay dicegah browser"));
-                musicBtn.classList.remove('hidden');
-
-                loadGuestbook();
-                checkSubmissionStatusAndHideForm(); // 👈 Panggil fungsi cek form
-            }, 800);
-        });
-
-        // 4. MUSIC TOGGLE (Kode Anda)
-        musicBtn.addEventListener('click', () => {
-            if (music.paused) {
-                music.play();
-                musicBtn.style.opacity = '1';
-            } else {
-                music.pause();
-                musicBtn.style.opacity = '0.5';
-            }
-        });
-
-        // 5. SCROLL ANIMATION (Kode Anda)
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, { threshold: 0.2 });
-
-        document.querySelectorAll('section').forEach(sec => observer.observe(sec));
-
-
-        // --------------------------------------------------------
-        // FUNGSI UTAMA CEK & SEMBUNYIKAN FORM
-        // --------------------------------------------------------
-        async function checkSubmissionStatusAndHideForm() {
-            if (!guestId) {
-                form.style.display = 'block'; // Jika link umum/tanpa ID, form tetap tampil
+    // 3. OPEN INVITATION Logic
+    openBtn.addEventListener('click', () => {
+        if (!isGuestValid && guestId) {
+            if (openBtn.innerHTML.includes('Tidak Dapat Dibuka')) {
+                alert('Akses undangan dibatasi hanya untuk Tamu Undangan yang terdaftar. Terima kasih.');
                 return;
             }
+        }
 
-            const statusURL = `${scriptURL}?action=checkSubmissionStatus&id=${guestId}`;
+        cover.style.transition = 'opacity 0.8s';
+        cover.style.opacity = '0';
+        setTimeout(() => {
+            cover.style.display = 'none';
+            main.classList.remove('hidden');
 
-            try {
-                const response = await fetch(statusURL);
-                const res = await response.json();
+            music.play().catch(e => console.log("Autoplay dicegah browser"));
+            musicBtn.classList.remove('hidden');
 
-                if (res.submitted === true) {
-                    form.style.display = 'none'; // Sembunyikan form
-                    
-                    // Tambahkan pesan sukses permanen di atas form
-                    if (!document.getElementById('submission-success-message')) {
-                         document.getElementById('rsvpForm').insertAdjacentHTML('beforebegin', 
-                        '<div id="submission-success-message" class="text-center p-4 bg-green-50 rounded-xl border border-green-200 text-green-700 font-bold mb-4">Anda sudah mengirimkan konfirmasi kehadiran. Terima kasih!</div>');
-                    }
-                } else {
-                    // Jika submitted: false, pastikan form terlihat
-                    form.style.display = 'block'; 
+            loadGuestbook();
+            checkSubmissionStatusAndHideForm(); // 👈 Panggil fungsi cek form
+        }, 800);
+    });
+
+    // 4. MUSIC TOGGLE (Kode Anda)
+    musicBtn.addEventListener('click', () => {
+        if (music.paused) {
+            music.play();
+            musicBtn.style.opacity = '1';
+        } else {
+            music.pause();
+            musicBtn.style.opacity = '0.5';
+        }
+    });
+
+    // 5. SCROLL ANIMATION (Kode Anda)
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('active');
+        });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+
+
+    // --------------------------------------------------------
+    // FUNGSI UTAMA CEK & SEMBUNYIKAN FORM
+    // --------------------------------------------------------
+    async function checkSubmissionStatusAndHideForm() {
+        if (!guestId) {
+            form.style.display = 'block'; // Jika link umum/tanpa ID, form tetap tampil
+            return;
+        }
+
+        const statusURL = `${scriptURL}?action=checkSubmissionStatus&id=${guestId}`;
+
+        try {
+            const response = await fetch(statusURL);
+            const res = await response.json();
+
+            if (res.submitted === true) {
+                form.style.display = 'none'; // Sembunyikan form
+                
+                // Tambahkan pesan sukses permanen di atas form
+                if (!document.getElementById('submission-success-message')) {
+                     document.getElementById('rsvpForm').insertAdjacentHTML('beforebegin', 
+                    '<div id="submission-success-message" class="text-center p-4 bg-green-50 rounded-xl border border-green-200 text-green-700 font-bold mb-4">Anda sudah mengirimkan konfirmasi kehadiran. Terima kasih!</div>');
                 }
-
-            } catch (error) {
-                console.error('Gagal mengecek status submit:', error);
+            } else {
+                // Jika submitted: false, pastikan form terlihat
                 form.style.display = 'block'; 
             }
+
+        } catch (error) {
+            console.error('Gagal mengecek status submit:', error);
+            form.style.display = 'block'; 
         }
-        // --------------------------------------------------------
+    }
+    // --------------------------------------------------------
 
 
-        // 6. COUNTDOWN TIMER (Kode Anda)
-        const countdownEl = document.getElementById('countdown-data');
-        if (countdownEl) {
-            const targetDate = new Date(countdownEl.dataset.date + 'T' + countdownEl.dataset.time).getTime();
+    // 6. COUNTDOWN TIMER (Kode Anda)
+    const countdownEl = document.getElementById('countdown-data');
+    if (countdownEl) {
+        const targetDate = new Date(countdownEl.dataset.date + 'T' + countdownEl.dataset.time).getTime();
 
-            setInterval(() => {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
 
-                if (distance < 0) {
-                    document.getElementById('countdown').innerHTML = "Acara Telah Dimulai";
-                    return;
-                }
-
-                document.getElementById('days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-                document.getElementById('hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById('minutes').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            }, 1000);
-        }
-
-        // 7. FORM HELPER (Kode Anda)
-        function toggleJumlah(show) {
-            document.getElementById('jumlah-wrapper').style.display = show ? 'block' : 'none';
-            document.getElementById('jumlah-input').value = show ? '1' : '0';
-        }
-
-        function updateJumlah(val) {
-            let input = document.getElementById('jumlah-input');
-            let current = parseInt(input.value);
-            let next = current + val;
-            if (next >= 1 && next <= 10) input.value = next;
-        }
-
-        function copyText(text, btnElement) {
-            navigator.clipboard.writeText(text).then(() => {
-                const originalContent = btnElement.innerHTML;
-                btnElement.innerHTML = '✔ Tersalin!';
-                btnElement.classList.remove('bg-primary');
-                btnElement.classList.add('bg-green-600');
-                setTimeout(() => {
-                    btnElement.innerHTML = originalContent;
-                    btnElement.classList.add('bg-primary');
-                    btnElement.classList.remove('bg-green-600');
-                }, 2000);
-            }).catch(err => {
-                alert("Gagal menyalin nomor rekening.");
-            });
-        }
-
-        // 8. GOOGLE SHEETS INTEGRATION (AJAX)
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            if (!scriptURL.includes('script.google.com')) {
-                alert("Error: URL Google Script belum dipasang!");
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = "Acara Telah Dimulai";
                 return;
             }
 
-            btnSubmit.disabled = true;
-            btnSubmit.innerHTML = 'Mengirim...';
+            document.getElementById('days').innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('minutes').innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        }, 1000);
+    }
 
-            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-                .then(response => response.json())
-                .then(res => {
-                    if (res.result === 'error' && res.error.includes('ID sudah pernah')) {
-                        alert('Gagal: Anda hanya dapat mengirimkan ucapan sekali.');
-                        form.style.display = 'none';
-                        checkSubmissionStatusAndHideForm();
-                    } else if (res.result === 'success') {
-                        alert('Terima kasih! Konfirmasi Anda telah tersimpan.');
-                        form.reset();
-                        document.getElementById('form-nama').value = guestName; 
-                        document.getElementById('form-guestId').value = guestId; 
-                        loadGuestbook();
-                        form.style.display = 'none'; // SEMBUNYIKAN FORM SETELAH BERHASIL SUBMIT
-                        checkSubmissionStatusAndHideForm(); // Tampilkan pesan sukses permanen
-                    } else {
-                        alert('Gagal mengirim. Silakan coba lagi. Error: ' + res.error);
-                    }
-                    
-                    btnSubmit.disabled = false;
-                    btnSubmit.innerHTML = 'Kirim Konfirmasi';
+    // 7. FORM HELPER (Kode Anda)
+    function toggleJumlah(show) {
+        document.getElementById('jumlah-wrapper').style.display = show ? 'block' : 'none';
+        document.getElementById('jumlah-input').value = show ? '1' : '0';
+    }
 
-                })
-                .catch(error => {
-                    console.error('Error!', error.message);
-                    alert('Gagal mengirim. Silakan coba lagi.');
-                    btnSubmit.disabled = false;
-                    btnSubmit.innerHTML = 'Kirim Konfirmasi';
-                });
+    function updateJumlah(val) {
+        let input = document.getElementById('jumlah-input');
+        let current = parseInt(input.value);
+        let next = current + val;
+        if (next >= 1 && next <= 10) input.value = next;
+    }
+
+    function copyText(text, btnElement) {
+        navigator.clipboard.writeText(text).then(() => {
+            const originalContent = btnElement.innerHTML;
+            btnElement.innerHTML = '✔ Tersalin!';
+            btnElement.classList.remove('bg-primary');
+            btnElement.classList.add('bg-green-600');
+            setTimeout(() => {
+                btnElement.innerHTML = originalContent;
+                btnElement.classList.add('bg-primary');
+                btnElement.classList.remove('bg-green-600');
+            }, 2000);
+        }).catch(err => {
+            alert("Gagal menyalin nomor rekening.");
         });
+    }
 
-        // 9. LOAD GUESTBOOK (Kode Anda)
-        function loadGuestbook() {
-            if (!scriptURL.includes('script.google.com')) return;
-
-            fetch(scriptURL)
-                .then(response => response.json())
-                .then(res => {
-                    const data = res.data;
-                    const guestList = document.getElementById('guestbook-list');
-                    const statHadir = document.getElementById('stat-hadir');
-                    const statTidak = document.getElementById('stat-tidak');
-
-                    if (!data || data.length === 0) {
-                        guestList.innerHTML = '<p class="text-center text-gray-500 text-sm">Belum ada ucapan.</p>';
-                        statHadir.innerText = '0';
-                        statTidak.innerText = '0';
-                        return;
-                    }
-
-                    // --- LOGIKA MENGHITUNG JUMLAH ---
-                    let totalHadir = 0;
-                    let totalTidak = 0;
-
-                    let html = '';
-
-                    data.slice().reverse().forEach(row => {
-                        // 1. Hitung Statistik
-                        if (row.status === 'Hadir') {
-                            totalHadir += parseInt(row.jumlah || 1);
-                        } else {
-                            totalTidak++;
-                        }
-                    });
-
-                    // Render angka ke kotak statistik
-                    statHadir.innerText = totalHadir;
-                    statTidak.innerText = totalTidak;
-
-                    // Render List Ucapan (Batasi 20 terbaru)
-                    data.slice().reverse().slice(0, 20).forEach(row => {
-                        const badgeClass = row.status === 'Hadir'
-                            ? 'bg-green-100 text-green-800 border-green-200'
-                            : 'bg-red-100 text-red-800 border-red-200';
-
-                        const initial = row.nama ? row.nama.charAt(0).toUpperCase() : '?';
-
-                        html += `
-                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 flex gap-3">
-                            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-500 shrink-0">
-                                ${initial}
-                            </div>
-                            <div class="w-full">
-                                <div class="flex justify-between items-start mb-1">
-                                    <h5 class="font-bold text-gray-800 text-sm">${row.nama}</h5>
-                                    <span class="text-[10px] px-2 py-0.5 rounded-full border ${badgeClass}">${row.status}</span>
-                                </div>
-                                <p class="text-gray-600 text-sm leading-snug">${row.ucapan}</p>
-                                <p class="text-[10px] text-gray-400 mt-2 text-right">${row.waktu || ''}</p>
-                            </div>
-                        </div>
-                        `;
-                    });
-
-                    guestList.innerHTML = html;
-                })
-                .catch(err => {
-                    console.error(err);
-                    document.getElementById('guestbook-list').innerHTML = '<p class="text-center text-red-400 text-xs">Gagal memuat data.</p>';
-                });
+    // 8. GOOGLE SHEETS INTEGRATION (AJAX)
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        if (!scriptURL.includes('script.google.com')) {
+            alert("Error: URL Google Script belum dipasang!");
+            return;
         }
-    </script>
+
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = 'Mengirim...';
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+            .then(response => response.json())
+            .then(res => {
+                if (res.result === 'error' && res.error.includes('ID sudah pernah')) {
+                    alert('Gagal: Anda hanya dapat mengirimkan ucapan sekali.');
+                    form.style.display = 'none';
+                    checkSubmissionStatusAndHideForm();
+                } else if (res.result === 'success') {
+                    alert('Terima kasih! Konfirmasi Anda telah tersimpan.');
+                    form.reset();
+                    document.getElementById('form-nama').value = guestName; 
+                    document.getElementById('form-guestId').value = guestId; 
+                    loadGuestbook();
+                    form.style.display = 'none'; // SEMBUNYIKAN FORM SETELAH BERHASIL SUBMIT
+                    checkSubmissionStatusAndHideForm(); // Tampilkan pesan sukses permanen
+                } else {
+                    alert('Gagal mengirim. Silakan coba lagi. Error: ' + res.error);
+                }
+                
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = 'Kirim Konfirmasi';
+
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('Gagal mengirim. Silakan coba lagi.');
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = 'Kirim Konfirmasi';
+            });
+    });
+
+    // 9. LOAD GUESTBOOK (Kode Anda)
+    function loadGuestbook() {
+        if (!scriptURL.includes('script.google.com')) return;
+
+        fetch(scriptURL)
+            .then(response => response.json())
+            .then(res => {
+                const data = res.data;
+                const guestList = document.getElementById('guestbook-list');
+                const statHadir = document.getElementById('stat-hadir');
+                const statTidak = document.getElementById('stat-tidak');
+
+                if (!data || data.length === 0) {
+                    guestList.innerHTML = '<p class="text-center text-gray-500 text-sm">Belum ada ucapan.</p>';
+                    statHadir.innerText = '0';
+                    statTidak.innerText = '0';
+                    return;
+                }
+
+                // --- LOGIKA MENGHITUNG JUMLAH ---
+                let totalHadir = 0;
+                let totalTidak = 0;
+
+                let html = '';
+
+                data.slice().reverse().forEach(row => {
+                    // 1. Hitung Statistik
+                    if (row.status === 'Hadir') {
+                        totalHadir += parseInt(row.jumlah || 1);
+                    } else {
+                        totalTidak++;
+                    }
+                });
+
+                // Render angka ke kotak statistik
+                statHadir.innerText = totalHadir;
+                statTidak.innerText = totalTidak;
+
+                // Render List Ucapan (Batasi 20 terbaru)
+                data.slice().reverse().slice(0, 20).forEach(row => {
+                    const badgeClass = row.status === 'Hadir'
+                        ? 'bg-green-100 text-green-800 border-green-200'
+                        : 'bg-red-100 text-red-800 border-red-200';
+
+                    const initial = row.nama ? row.nama.charAt(0).toUpperCase() : '?';
+
+                    html += `
+                    <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 flex gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-500 shrink-0">
+                            ${initial}
+                        </div>
+                        <div class="w-full">
+                            <div class="flex justify-between items-start mb-1">
+                                <h5 class="font-bold text-gray-800 text-sm">${row.nama}</h5>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full border ${badgeClass}">${row.status}</span>
+                            </div>
+                            <p class="text-gray-600 text-sm leading-snug">${row.ucapan}</p>
+                            <p class="text-[10px] text-gray-400 mt-2 text-right">${row.waktu || ''}</p>
+                        </div>
+                    </div>
+                    `;
+                });
+
+                guestList.innerHTML = html;
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById('guestbook-list').innerHTML = '<p class="text-center text-red-400 text-xs">Gagal memuat data.</p>';
+            });
+    }
+</script>
 
 </body>
 
 </html>
+
 
