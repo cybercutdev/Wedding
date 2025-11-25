@@ -740,8 +740,6 @@ Tamu Undangan
         </section>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
     // === PENTING: GANTI URL INI ===
@@ -772,10 +770,10 @@ Tamu Undangan
         slidesPerView: 1, spaceBetween: 10, loop: true, autoplay: { delay: 3000, disableOnInteraction: false, }, pagination: { el: ".swiper-pagination", clickable: true, }, breakpoints: { 640: { slidesPerView: 2, spaceBetween: 20, }, },
     });
 
-    // 2. GUEST ID & NAME FROM URL (LOGIKA PENGAMBILAN NAMA BARU)
+    // 2. GUEST ID & NAME FROM URL
     const urlParams = new URLSearchParams(window.location.search);
     const guestId = urlParams.get('id'); // Kunci utama untuk validasi
-    let guestName = ''; // Default, akan diisi dari Apps Script
+    let guestName = 'Tamu Undangan'; // Default, akan diisi dari Apps Script
 
     // Set nilai hidden form dan display awal
     const formNamaInput = document.getElementById('form-nama');
@@ -790,7 +788,9 @@ Tamu Undangan
     // FUNGSI VALIDASI NAMA TAMU (berbasis ID)
     async function validateGuest() {
         if (!guestId) {
-            validationStatus.innerHTML = '⚠️ Silakan gunakan link yang di bagikan mempelai.';
+            // --- PERUBAHAN: Menampilkan pesan "Anda Tidak Terdaftar" jika ID hilang ---
+            validationStatus.innerHTML = '❌ Anda Tidak Terdaftar'; 
+            guestNameDisplay.innerText = 'Tamu Undangan'; // Pastikan nama tetap default
             setOpenButtonState(false, '❌ Tidak Dapat Dibuka');
             return;
         }
@@ -806,9 +806,9 @@ Tamu Undangan
 
             if (res.valid === true) {
                 
-                // --- LOGIKA MENGAMBIL NAMA DARI APPS SCRIPT (res.name) ---
-                guestName = res.name || ''; // Ambil nama dari Apps Script
-                guestNameDisplay.innerText = guestName; // Tampilkan nama di cover
+                // --- LOGIKA MENAMPILKAN NAMA JIKA TERDAFTAR ---
+                guestName = res.name || 'Tamu Undangan'; // Ambil nama dari Apps Script
+                guestNameDisplay.innerText = guestName; // Ganti "Tamu Undangan" dengan nama
                 if (formNamaInput) formNamaInput.value = guestName; // Set nama ke hidden form
                 // ------------------------------------------
 
@@ -817,7 +817,9 @@ Tamu Undangan
                 isGuestValid = true;
 
             } else {
+                // --- LOGIKA UNTUK ID ADA TAPI TIDAK TERDAFTAR ---
                 validationStatus.innerHTML = '❌ Maaf, Tamu Undangan Tidak Terdaftar.';
+                guestNameDisplay.innerText = 'Tamu Undangan'; // Kembali ke default
                 setOpenButtonState(false, '❌ Tidak Dapat Dibuka');
                 isGuestValid = false;
             }
@@ -1090,10 +1092,12 @@ Tamu Undangan
             });
     }
 </script>
+	
 
 </body>
 
 </html>
+
 
 
 
